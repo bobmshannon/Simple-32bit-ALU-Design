@@ -15,11 +15,11 @@ module alu(x, y, opcode);
 		overflow[1] - overflow indicator from subtractor
 		overflow[2] - overflow indicator from slt
 	*/
-	add adder (x,y,w1,overflow[0],zero);
-	bitwiseor bitwiseorop (x,y,w2);
-	bitwiseand bitwiseandop (x,y,w3);
-	sub subtracter (x, y, w4, overflow[1]);
-	slt sltop (x, y, w5, overflow[2]);
+	add op0 (x,y,w1,overflow[0],zero);
+	bitwiseor op1 (x,y,w2);
+	bitwiseand op2 (x,y,w3);
+	sub op3 (x, y, w4, overflow[1]);
+	slt op4 (x, y, w5, overflow[2]);
 	
 	// TODO: Implement output selector using w1-w5
 	
