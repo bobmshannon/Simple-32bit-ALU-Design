@@ -1,36 +1,49 @@
+/*
+	Input is 32 bit numbers x and y
+	
+	Opcode 		Operation
+	 000           ADD
+	 001		   OR
+	 010           AND
+	 011           SUB
+	 100           SLT
+	 101        *UNUSED*
+	 110		*UNUSED*
+	 111		*UNUSED*
+*/
 module alu(x, y, opcode);
-	input [31:0] x, y, opcode;
+	input [31:0] x, y;
+	input [2:0] opcode;
 	wire [2:0] overflow;
 	wire [31:0] f0, f1, f2, f3, f4, result;
 	wire w5, zero, set, isoverflowed;
 	assign zero = 1'b0;
 	
-	/*
-		w1 - adder output
-		w2 - bitwise or output
-		w3 - bitwise and output
-		w4 - subtracter output
-		w5 - slt output
-		overflow[0] - overflow indicator from adder
-		overflow[1] - overflow indicator from subtractor
-		overflow[2] - overflow indicator from slt
-	*/
+	
 	add op0 (x,y,f0,overflow[0],zero);
 	bitwiseor op1 (x,y,f1);
 	bitwiseand op2 (x,y,f2);
 	sub op3 (x, y, f3, overflow[1]);
 	slt op4 (x, y, set, overflow[2]);
 	
-	//out outputselector (f0, f1, f2, f3, set, opcode[0], opcode[1], opcode[2], overflow[0], overflow[1], overflow[2], result, isoverflowed); 
+	out outputselector (f0,f1,f2,f3,set,opcode[0],opcode[1],opcode[2],overflow[0],overflow[1],overflow[2],result,isoverflowed);
 	
-	// TODO: Implement output selector using w1-w5
-	
+	assign x = 32'b00000000000000000000000000001001; 
+	assign y = 32'b00000000000000000000000000000011;
+	assign opcode = 4'b100;
+	initial
+		begin
+		$monitor($time,,"x=%d, y=%d, result=%d, isoverflowed=%d, set=%d",x,y,result,isoverflowed,set);
+
+		end
+		
+
 endmodule
 
 /* ========================================================= */
 /*                   OUTPUT SELECTOR MODULE                  */
 /* ========================================================= */
-module out(f0, f1, f2, f3, s0, s1, s2, overflow0, overflow1, overflow2, result, isoverflowed);
+module out(f0, f1, f2, f3, set, s0, s1, s2, overflow0, overflow1, overflow2, result, isoverflowed);
 	input [31:0] f0, f1, f2, f3;
 	input s0, s1, s2, overflow0, overflow1, overflow2, set;
 	output [31:0] result;
@@ -71,6 +84,7 @@ module out(f0, f1, f2, f3, s0, s1, s2, overflow0, overflow1, overflow2, result, 
 	mux8to1 mux30 (f0[30], f1[30], f2[30], f3[30], zero, zero, zero, zero, s0, s1, s2, result[30]);
 	mux8to1 mux31 (f0[31], f1[31], f2[31], f3[31], zero, zero, zero, zero, s0, s1, s2, result[31]);
 	
+	/* FOR TESTING:
 	assign f0 = 32'b10011001100110011001100110011001;
 	assign f1 = 32'b00110011001100110011001100110011;
 	assign f2 = 32'b10101010101010101010101010101010;
@@ -84,7 +98,7 @@ module out(f0, f1, f2, f3, s0, s1, s2, overflow0, overflow1, overflow2, result, 
 		$monitor($time,,"result=%b, s2=%b, s1=%b, s0=%b, f0=%b, f1=%b, f2=%b, f3=%b",result,s2,s1,s0,f0,f1,f2,f3);
 
 		end
-	
+	*/
 endmodule
 
 /* ========================================================= */
@@ -96,39 +110,39 @@ module add(x,y,s,cout,cin);
 	input cin;
 	output cout;
 	wire c[31:0];
-	
+
 	fulladder f0 (x[0],y[0],cin,s[0],c[0]);
 	fulladder f1 (x[1],y[1],c[0],s[1],c[1]);
 	fulladder f2 (x[2],y[2],c[1],s[2],c[2]);
 	fulladder f3 (x[3],y[3],c[2],s[3],c[3]);
-	fulladder f4 (x[4],y[4],c[2],s[3],c[3]);
-	fulladder f5 (x[5],y[5],c[3],s[4],c[4]);
-	fulladder f6 (x[6],y[6],c[4],s[5],c[5]);
-	fulladder f7 (x[7],y[7],c[5],s[6],c[6]);
-	fulladder f8 (x[8],y[8],c[6],s[7],c[7]);
-	fulladder f9 (x[9],y[9],c[7],s[8],c[8]);
-	fulladder f10 (x[10],y[10],c[8],s[9],c[9]);
-	fulladder f11 (x[11],y[11],c[9],s[10],c[10]);
-	fulladder f12 (x[12],y[12],c[10],s[11],c[11]);
-	fulladder f13 (x[13],y[13],c[11],s[12],c[12]);
-	fulladder f14 (x[14],y[14],c[12],s[13],c[13]);
-	fulladder f15 (x[15],y[15],c[13],s[14],c[14]);
-	fulladder f16 (x[16],y[16],c[14],s[15],c[15]);
-	fulladder f17(x[17],y[17],c[15],s[16],c[16]);
-	fulladder f18 (x[18],y[18],c[16],s[17],c[17]);
-	fulladder f19 (x[19],y[19],c[17],s[18],c[18]);
-	fulladder f20 (x[20],y[20],c[18],s[19],c[19]);
-	fulladder f21 (x[21],y[21],c[19],s[20],c[20]);
-	fulladder f22 (x[22],y[22],c[20],s[21],c[21]);
-	fulladder f23 (x[23],y[23],c[21],s[22],c[22]);
-	fulladder f24 (x[24],y[24],c[22],s[23],c[23]);
-	fulladder f25 (x[25],y[25],c[23],s[24],c[24]);
-	fulladder f26 (x[26],y[26],c[24],s[25],c[25]);
-	fulladder f27 (x[27],y[27],c[25],s[26],c[26]);
-	fulladder f28 (x[28],y[28],c[26],s[27],c[27]);
-	fulladder f29 (x[29],y[29],c[27],s[28],c[28]);
-	fulladder f30 (x[30],y[30],c[28],s[29],c[29]);
-	fulladder f31 (x[31],y[31],c[29],s[30],cout);
+	fulladder f4 (x[4],y[4],c[3],s[4],c[4]);
+	fulladder f5 (x[5],y[5],c[4],s[5],c[5]);
+	fulladder f6 (x[6],y[6],c[5],s[6],c[6]);
+	fulladder f7 (x[7],y[7],c[6],s[7],c[7]);
+	fulladder f8 (x[8],y[8],c[7],s[8],c[8]);
+	fulladder f9 (x[9],y[9],c[8],s[9],c[9]);
+	fulladder f10 (x[10],y[10],c[9],s[10],c[10]);
+	fulladder f11 (x[11],y[11],c[10],s[11],c[11]);
+	fulladder f12 (x[12],y[12],c[11],s[12],c[12]);
+	fulladder f13 (x[13],y[13],c[12],s[13],c[13]);
+	fulladder f14 (x[14],y[14],c[13],s[14],c[14]);
+	fulladder f15 (x[15],y[15],c[14],s[15],c[15]);
+	fulladder f16 (x[16],y[16],c[15],s[16],c[16]);
+	fulladder f17 (x[17],y[17],c[16],s[17],c[17]);
+	fulladder f18 (x[18],y[18],c[17],s[18],c[18]);
+	fulladder f19 (x[19],y[19],c[18],s[19],c[19]);
+	fulladder f20 (x[20],y[20],c[19],s[20],c[20]);
+	fulladder f21 (x[21],y[21],c[20],s[21],c[21]);
+	fulladder f22 (x[22],y[22],c[21],s[22],c[22]);
+	fulladder f23 (x[23],y[23],c[22],s[23],c[23]);
+	fulladder f24 (x[24],y[24],c[23],s[24],c[24]);
+	fulladder f25 (x[25],y[25],c[24],s[25],c[25]);
+	fulladder f26 (x[26],y[26],c[25],s[26],c[26]);
+	fulladder f27 (x[27],y[27],c[26],s[27],c[27]);
+	fulladder f28 (x[28],y[28],c[27],s[28],c[28]);
+	fulladder f29 (x[29],y[29],c[28],s[29],c[29]);
+	fulladder f30 (x[30],y[30],c[29],s[30],c[30]);
+	fulladder f31 (x[31],y[31],c[30],s[31],cout);
 endmodule
 
 module fulladder(a, b, c, s, cout);
