@@ -16,9 +16,8 @@ module alu(x, y, opcode);
 	input [2:0] opcode;
 	wire [2:0] overflow;
 	wire [31:0] f0, f1, f2, f3, f4, result;
-	wire w5, zero, set, isoverflowed;
+	wire w5, zero, set, isoverflowed, cout;
 	assign zero = 1'b0;
-	
 	
 	add op0 (x,y,f0,overflow[0],zero);
 	bitwiseor op1 (x,y,f1);
@@ -26,30 +25,31 @@ module alu(x, y, opcode);
 	sub op3 (x, y, f3, overflow[1]);
 	slt op4 (x, y, set, overflow[2]);
 	
-	out outputselector (f0,f1,f2,f3,set,opcode[0],opcode[1],opcode[2],overflow[0],overflow[1],overflow[2],result,isoverflowed);
+	out outputselector (f0,f1,f2,f3,set,opcode[0],opcode[1],opcode[2],overflow[0],overflow[1],overflow[2],result,isoverflowed,cout);
 	
-	assign x = 32'b00000000000000000000000000001001; 
-	assign y = 32'b00000000000000000000000000000011;
-	assign opcode = 4'b100;
+	assign x = 1000000000; 
+	assign y = 3000000000; 
+	assign opcode = 4'b000;
 	initial
 		begin
-		$monitor($time,,"x=%d, y=%d, result=%d, isoverflowed=%d, set=%d",x,y,result,isoverflowed,set);
-
+		$display("x=%d, y=%d, opcode=%b, result=%d, isoverflowed=%d, zero=%b, cout=%b",x,y,opcode,result,isoverflowed,zero,cout);
+		$monitor("x=%d, y=%d, opcode=%b, result=%d, isoverflowed=%d, zero=%b, cout=%b",x,y,opcode,result,isoverflowed,zero,cout);
+		$display("x=%d, y=%d, opcode=%b, result=%d, isoverflowed=%d, zero=%b, cout=%b",x,y,opcode,result,isoverflowed,zero,cout);
 		end
 		
-
 endmodule
 
 /* ========================================================= */
 /*                   OUTPUT SELECTOR MODULE                  */
 /* ========================================================= */
-module out(f0, f1, f2, f3, set, s0, s1, s2, overflow0, overflow1, overflow2, result, isoverflowed);
+module out(f0, f1, f2, f3, set, s0, s1, s2, overflow0, overflow1, overflow2, result, isoverflowed, cout);
 	input [31:0] f0, f1, f2, f3;
 	input s0, s1, s2, overflow0, overflow1, overflow2, set;
 	output [31:0] result;
-	output isoverflowed;
+	output isoverflowed, cout;
 	wire zero;
 	assign zero = 1'b0;
+	assign cout = isoverflowed;
 	
 	mux8to1 mux0 (f0[0], f1[0], f2[0], f3[0], set, zero, zero, zero, s0, s1, s2, result[0]);
 	mux8to1 mux1 (f0[1], f1[1], f2[1], f3[1], zero, zero, zero, zero, s0, s1, s2, result[1]);
@@ -84,21 +84,7 @@ module out(f0, f1, f2, f3, set, s0, s1, s2, overflow0, overflow1, overflow2, res
 	mux8to1 mux30 (f0[30], f1[30], f2[30], f3[30], zero, zero, zero, zero, s0, s1, s2, result[30]);
 	mux8to1 mux31 (f0[31], f1[31], f2[31], f3[31], zero, zero, zero, zero, s0, s1, s2, result[31]);
 	
-	/* FOR TESTING:
-	assign f0 = 32'b10011001100110011001100110011001;
-	assign f1 = 32'b00110011001100110011001100110011;
-	assign f2 = 32'b10101010101010101010101010101010;
-	assign f3 = 32'b10111011101110111011101110111011;
-	assign set = 1;
-	assign s2 = 0;
-	assign s1 = 0;
-	assign s0 = 1;
-	initial
-		begin
-		$monitor($time,,"result=%b, s2=%b, s1=%b, s0=%b, f0=%b, f1=%b, f2=%b, f3=%b",result,s2,s1,s0,f0,f1,f2,f3);
-
-		end
-	*/
+	mux8to1 mux32 (overflow0, overflow1, zero, zero, overflow2, zero, zero, zero, s0, s1, s2, isoverflowed);
 endmodule
 
 /* ========================================================= */
@@ -204,7 +190,7 @@ module sub(x,y,f,overflow);
 	not(ynot[29],y[29]);
 	not(ynot[30],y[30]);
 	not(ynot[31],y[31]);
-									
+
 	add adder0(one,ynot,ynotplusone,overflow1,zero);
 	add adder1(x,ynotplusone,f,overflow2,zero);
 	

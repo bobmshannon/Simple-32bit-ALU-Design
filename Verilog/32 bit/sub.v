@@ -48,14 +48,13 @@ module sub(x,y,f,overflow);
 	
 	or(overflow, overflow1, overflow2);
 	
-	/* FOR TESTING:
-	//assign x = 4'b1001;
-	//assign y = 4'b0011;
+	assign x = 32'b00000000000000000000000000001001;
+	assign y = 32'b00000000000000000000000000010011;
 	initial
 		begin
-		$monitor($time,,"x=%b, y=%b, f=%b, overflow=%b, overflow1=%b, overflow2=%b",x,y,f,overflow,overflow1,overflow2);
+		$monitor($time,,"one=%b, y=%b, f=%d, overflow=%b, overflow1=%b, overflow2=%b",one,y,f,overflow,overflow1,overflow2);
 		end
-	*/
+	
 endmodule
 
 /* ========================================================= */
