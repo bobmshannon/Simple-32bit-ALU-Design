@@ -1,3 +1,30 @@
+module testbench();
+	wire [31:0] x,y,f;
+	wire [2:0] opcode;
+	wire cin,cout,overflow,zero; 
+	testALU test (x, y, opcode, f, overflow, cout, zero);
+	alu alu0 (x, y, opcode, f, overflow, cout, zero);
+endmodule
+
+module testALU(x, y, opcode, f, overflow, cout, zero);
+	input [31:0] f;
+	input cout, overflow, zero;
+	output [31:0] x,y;
+	output [2:0] opcode;
+	reg [31:0] x,y;
+	reg [2:0] opcode;
+	
+	initial
+		begin
+		$monitor($time,,"x=%d, y=%d, f=%d",x,y,f);
+		$display($time,,"x=%d, y=%d, f=%d",x,y,f);
+		#20 x=2; y=3; opcode=0;
+		#20 x=1; y=7; opcode=0;
+		#20  // Required for iverilog to show final values
+		$display($time,,"x=%d, y=%d, f=%d",x,y,f);
+		end
+endmodule
+
 /*
 	Input is 32 bit numbers x and y
 	
@@ -11,32 +38,33 @@
 	 110		*UNUSED*
 	 111		*UNUSED*
 */
-module alu(x, y, opcode);
+module alu(x, y, opcode, f, overflow, cout, zero);
 	input [31:0] x, y;
 	input [2:0] opcode;
-	wire [2:0] overflow;
+	output overflow, zero, cout;
+	output [31:0] f;
+	wire [2:0] opoverflow;
 	wire [31:0] f0, f1, f2, f3, f4, result;
 	wire w5, zero, set, isoverflowed, cout;
 	assign zero = 1'b0;
 	
-	add op0 (x,y,f0,overflow[0],zero);
+	add op0 (x,y,f0,opoverflow[0],zero);
 	bitwiseor op1 (x,y,f1);
 	bitwiseand op2 (x,y,f2);
-	sub op3 (x, y, f3, overflow[1]);
-	slt op4 (x, y, set, overflow[2]);
-	
-	out outputselector (f0,f1,f2,f3,set,opcode[0],opcode[1],opcode[2],overflow[0],overflow[1],overflow[2],result,isoverflowed,cout);
-	
-	assign x = 1000000000; 
-	assign y = 3000000000; 
+	sub op3 (x, y, f3, opoverflow[1]);
+	slt op4 (x, y, set, opoverflow[2]);
+	out outputselector (f0,f1,f2,f3,set,opcode[0],opcode[1],opcode[2],opoverflow[0],opoverflow[1],opoverflow[2],f,isoverflowed,cout);
+		
+	/*
+	assign x = 1000000000;
+	assign y = 3000000000;
 	assign opcode = 4'b000;
 	initial
-		begin
+	begin
 		$display("x=%d, y=%d, opcode=%b, result=%d, isoverflowed=%d, zero=%b, cout=%b",x,y,opcode,result,isoverflowed,zero,cout);
 		$monitor("x=%d, y=%d, opcode=%b, result=%d, isoverflowed=%d, zero=%b, cout=%b",x,y,opcode,result,isoverflowed,zero,cout);
 		$display("x=%d, y=%d, opcode=%b, result=%d, isoverflowed=%d, zero=%b, cout=%b",x,y,opcode,result,isoverflowed,zero,cout);
-		end
-		
+	end*/
 endmodule
 
 /* ========================================================= */
