@@ -16,52 +16,87 @@ module testALU(x, y, opcode, f, overflow, cout, zero);
 	assign overflow = 0;
 	initial
 		begin
-		$monitor($time,,"x=%d, y=%d, opcode=%b, f=%d",x,y,opcode,f);
+		$display("====================================================================================");
+		$display("                   32 bit ALU Functional Simulation (zero delay)                       ");
+		$display("                            Author: Robert Shannon			            ");
+		$display("                          Email: rshannon@buffalo.edu		            ");
+		$display("====================================================================================");
+		
 		// ADD
-		/*
+		$display("----------------------------------------------------------");
+		$display("                 ADDITION FUNCTIONALITY TEST              ");
+		$display("----------------------------------------------------------");
 		#20 x=1024; y=128; opcode=0;
+		$display("1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		#20 x=100837; y=385421; opcode=0;
+		$display("2. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		#20 x=37; y=6; opcode=0;
+		$display("3. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		#20 x=842; y=986; opcode=0;
+		$display("4. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		#20 x=1000000000; y=3000000000; opcode=0;
-		*/
+		$display("5. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		
 		// SUB
-		/*
+		$display("----------------------------------------------------------");
+		$display("              SUBTRACTION FUNCTIONALITY TEST              ");
+		$display("----------------------------------------------------------");
 		#20 x=8108; y=9375; opcode=3;
+		$display("1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		#20 x=3264; y=2917; opcode=3;
+		$display("2. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		#20 x=121; y=161; opcode=3;
+		$display("3. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		#20 x=842; y=986; opcode=3;
+		$display("4. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		#20 x=95; y=34; opcode=3;
-		*/
+		$display("5. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		
 		// BITWISE AND
-		/*
-		$display($time,,"x=%b, y=%b, opcode=%b, f=%b",x,y,opcode,f);
+		$display("----------------------------------------------------------");
+		$display("              BITWISE AND FUNCTIONALITY TEST              ");
+		$display("----------------------------------------------------------");
 		#20 x=32'b11010111100100011101011011110011; y=32'b10111111011000000010000101110001; opcode=2;
+		$display("1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);		
 		#20 x=32'b00111000001011011000000111111010; y=32'b10001110100111011010100001001111; opcode=2;
+		$display("2. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		#20 x=32'b00100011100011101000111010110101; y=32'b10111101011001001101011111110110; opcode=2;
+		$display("3. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		#20 x=32'b10101100010010010100011000111011; y=32'b10001101100011101101001110011101; opcode=2;
-		#20 x=32'b10101011100100001101011000001011; y=32'b00010100011110101110000000010011; opcode=2;		
-		#20
-		*/
+		$display("4. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		#20 x=32'b10101011100100001101011000001011; y=32'b00010100011110101110000000010011; opcode=2;	
+		$display("5. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);		
 		
 		// BITWISE OR
-		/*
-		$display($time,,"x=%b, y=%b, opcode=%b, f=%b",x,y,opcode,f);
+		$display("----------------------------------------------------------");
+		$display("               BITWISE OR FUNCTIONALITY TEST              ");
+		$display("----------------------------------------------------------");
 		#20 x=32'b01001010111011101101011101000100; y=32'b11001010111000111101100000001000; opcode=1;
+		$display("1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);	
 		#20 x=32'b00010110010000100000101010001111; y=32'b11001111111010000100011000111011; opcode=1;
+		$display("2. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);	
 		#20 x=32'b11001111100000001111100011010000; y=32'b00011010100011100100011100000011; opcode=1;
+		$display("3. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);	
 		#20 x=32'b10111101111011000011100011101110; y=32'b11101011110011110011111101010100; opcode=1;
+		$display("4. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		#20 x=32'b00111011010100010110110001010000; y=32'b11010101000110011100110110011101; opcode=1;	
-		*/
+		$display("5. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		
-		// SLT
-		//#20 x=4026855; y=1301126; opcode=4;
-		//#20 x=71; y=57; opcode=4;
-		//#20 x=14507; y=97400; opcode=4;
-		//#20 x=971015; y=167060; opcode=4;
-		//#20 x=4026855; y=1301126; opcode=4;	
+		// BITWISE OR
+		$display("----------------------------------------------------------");
+		$display("          SET LESS THAN (SLT) FUNCTIONALITY TEST          ");
+		$display("----------------------------------------------------------");
+		#20 x=24; y=65; opcode=4;
+		#20
+		$display("1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		#20 x=71; y=57; opcode=4;
+		$display("2. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		#20 x=14507; y=97400; opcode=4;
+		$display("3. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		#20 x=971015; y=167060; opcode=4;
+		$display("4. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		#20 x=4026855; y=1301126; opcode=4;	
+		$display("5. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		
 		end
 endmodule
@@ -204,14 +239,14 @@ module fulladder(a, b, c, s, cout);
 	input a, b, c;
 	output s, cout;
 
-	xor #1
+	xor
 		g1(w1, a, b),
 		g2(s, w1, c);
-	and #1
+	and
 		g3(w2, c, b),
 		g4(w3, c, a),
 		g5(w4, a, b);
-	or #1
+	or
 		g6(cout, w2, w3, w4);
 endmodule
 
