@@ -1,3 +1,6 @@
+/* ========================================================= */
+/*                   ZERO DELAY SIMULATION                   */
+/* ========================================================= */
 module testbench();
 	wire [31:0] x,y,f;
 	wire [2:0] opcode;
@@ -102,17 +105,11 @@ module testALU(x, y, opcode, f, overflow, cout, zero);
 endmodule
 
 /*
-	Input is 32 bit numbers x and y
+	A 32 bit ALU with overflow detection.
 	
-	Opcode 		Operation
-	 000           ADD
-	 001		   OR
-	 010           AND
-	 011           SUB
-	 100           SLT
-	 101        *UNUSED*
-	 110		*UNUSED*
-	 111		*UNUSED*
+	@inputs x, y, opcode
+	@outputs f, overflow, cout, zero
+	@dependencies none
 */
 module alu(x, y, opcode, f, overflow, cout, zero);
 	input [31:0] x, y;
@@ -130,22 +127,15 @@ module alu(x, y, opcode, f, overflow, cout, zero);
 	sub op3 (x, y, f3, opoverflow[1]);
 	slt op4 (x, y, f4, opoverflow[2]);
 	out outputselector (f0,f1,f2,f3,f4,opcode[0],opcode[1],opcode[2],opoverflow[0],opoverflow[1],opoverflow[2],f,isoverflowed,cout);
-		
-	/*
-	assign x = 1000000000;
-	assign y = 3000000000;
-	assign opcode = 4'b000;
-	initial
-	begin
-		$display("x=%d, y=%d, opcode=%b, result=%d, isoverflowed=%d, zero=%b, cout=%b",x,y,opcode,result,isoverflowed,zero,cout);
-		$monitor("x=%d, y=%d, opcode=%b, result=%d, isoverflowed=%d, zero=%b, cout=%b",x,y,opcode,result,isoverflowed,zero,cout);
-		$display("x=%d, y=%d, opcode=%b, result=%d, isoverflowed=%d, zero=%b, cout=%b",x,y,opcode,result,isoverflowed,zero,cout);
-	end*/
 endmodule
 
-/* ========================================================= */
-/*                   OUTPUT SELECTOR MODULE                  */
-/* ========================================================= */
+/*
+	Selects the correct output F based on the opcode.
+	
+	@inputs f0, f1, f2, f3, f4, s0, s1, s2, overflow0, overflow1, overflow2
+	@outputs result, isoverflowed, cout
+	@dependencies mux8to1
+*/
 module out(f0, f1, f2, f3, f4, s0, s1, s2, overflow0, overflow1, overflow2, result, isoverflowed, cout);
 	input [31:0] f0, f1, f2, f3, f4;
 	input s0, s1, s2, overflow0, overflow1, overflow2;
@@ -191,9 +181,13 @@ module out(f0, f1, f2, f3, f4, s0, s1, s2, overflow0, overflow1, overflow2, resu
 	mux8to1 mux32 (overflow0, overflow1, zero, zero, overflow2, zero, zero, zero, s0, s1, s2, isoverflowed);
 endmodule
 
-/* ========================================================= */
-/*                     32BIT ADDER MODULE                    */
-/* ========================================================= */
+/*
+	Performs addition on two 32 bit numbers.
+	
+	@inputs x, y, cin
+	@outputs s, cout
+	@dependencies fulladder
+*/
 module add(x,y,s,cout,cin);
 	input [31:0] x,y;
 	output [31:0] s;
@@ -250,9 +244,13 @@ module fulladder(a, b, c, s, cout);
 		g6(cout, w2, w3, w4);
 endmodule
 
-/* ========================================================= */
-/*                 32BIT SUBTRACTOR MODULE                   */
-/* ========================================================= */
+/*
+	Performs two's complement subtraction on two 32 bit numbers.
+	
+	@inputs x, y
+	@outputs f, overflow
+	@dependencies add
+*/
 module sub(x,y,f,overflow);
 	input [31:0] x,y;
 	wire [31:0] x, y, one, ynot,ynotplusone;
@@ -301,9 +299,13 @@ module sub(x,y,f,overflow);
 	or(overflow, overflow1, overflow2);
 endmodule
 
-/* ========================================================= */
-/*                 32BIT BITWISE AND MODULE                 */
-/* ========================================================= */
+/*
+	Performs the bitwise AND operation using two 32 bit numbers
+
+	@inputs x, y
+	@outputs f
+	@dependencies none
+*/
 module bitwiseand(x,y,f);
 	input [31:0] x, y;
 	output [31:0] f;
@@ -342,9 +344,13 @@ module bitwiseand(x,y,f);
 	and(f[31],x[31],y[31]);
 endmodule
 
-/* ========================================================= */
-/*                 32BIT BITWISE OR MODULE                 */
-/* ========================================================= */
+/*
+	Performs the bitwise OR operation using two 32 bit numbers
+
+	@inputs x, y
+	@outputs f
+	@dependencies none
+*/
 module bitwiseor(x,y,f);
 	input [31:0] x, y;
 	output [31:0] f;
@@ -383,9 +389,14 @@ module bitwiseor(x,y,f);
 	or(f[31],x[31],y[31]);
 endmodule
 
-/* ========================================================= */
-/*                  32BIT SLT MODULE                         */
-/* ========================================================= */
+/*
+	Compares two 32 bit numbers X and Y. Asserts 1 if X < Y. 
+	Else assert 0.
+
+	@inputs x, y
+	@outputs f, overflow
+	@dependencies sub
+*/
 module slt(x,y,f,overflow);
 	input [31:0] x,y;
 	wire [31:0] result;
@@ -398,9 +409,13 @@ module slt(x,y,f,overflow);
 	assign f[31:1] = 0;
 endmodule
 
-/* ========================================================= */
-/*                    MULTIPLEXER MODULE(s)                  */
-/* ========================================================= */
+/*
+	Implementation of an 8-1 MUX.
+
+	@inputs d0, d1, d2, d3, d4, d5, d6, d7, s0, s1, s2
+	@outputs f
+	@dependencies mux4to1 mux2to1
+*/
 module mux8to1(d0, d1, d2, d3, d4, d5, d6, d7, s0, s1, s2, f);
 	input d0, d1, d2, d3, d4, d5, d6, d7, s0, s1, s2;
 	output f;
