@@ -1,14 +1,34 @@
 /* ========================================================= */
 /*                  32BIT SLT MODULE                         */
 /* ========================================================= */
-module slt(x,y,set,overflow);
-	input [31:0] x, y;
-	output set, overflow;
-	wire [31:0] ynot, one, sum, result;
-	assign one = 4'b1;
-	wire overflow1, overflow2, zero;
-	assign zero = 1'b0;
+module slt(x,y,f,overflow);
+	input [31:0] x,y;
+	output [31:0] f;
+	wire [31:0] result;
+	output overflow;
 	
+	assign f = 0;
+	assign f[0] = result[31];
+	
+	sub subtractor0 (x,y,result,overflow);
+	
+	assign x = 14507;
+	assign y = 97400;
+	initial
+		begin
+		$monitor($time,,"x=%d, y=%d, result=%b",x,y,b);
+		end
+endmodule
+
+module sub(x,y,f,overflow);
+	input [31:0] x,y;
+	wire [31:0] x, y, one, ynot,ynotplusone;
+	wire overflow1,overflow2,zero;
+	output [31:0] f;
+	output overflow;
+	assign one = 32'b1;
+	assign zero = 1'b0;
+
 	not(ynot[0],y[0]);
 	not(ynot[1],y[1]);
 	not(ynot[2],y[2]);
@@ -41,27 +61,20 @@ module slt(x,y,set,overflow);
 	not(ynot[29],y[29]);
 	not(ynot[30],y[30]);
 	not(ynot[31],y[31]);
+									
+	add adder0(one,ynot,ynotplusone,overflow1,zero);
+	add adder1(x,ynotplusone,f,overflow2,zero);
 	
-	add adder0 (ynot,one,sum,overflow1,zero);
-	add adder1 (x,sum,result,overflow2,zero);
+	or(overflow, overflow1, overflow2);
 	
-	or(overflow,overflow1,overflow2);
-	
-	assign set = result[3];
-	
-	/* FOR TESTING:
-	assign x = 4'b0001;
-	assign y = 4'b0111;
+	assign x = 32'b00000000000000000000000000001001;
+	assign y = 32'b00000000000000000000000000010011;
 	initial
 		begin
-
-		$monitor($time,,"x=%b, y=%b, set=%b, overflow=%b sum=%b result=%b",x,y,set,overflow,sum,result);
-		$display($time,,"x=%b, y=%b, set=%b, overflow=%b sum=%b result=%b",x,y,set,overflow,sum,result);
-		$display($time,,"x=%b, y=%b, set=%b, overflow=%b sum=%b result=%b",x,y,set,overflow,sum,result);
+		$monitor($time,,"one=%b, y=%b, f=%d, overflow=%b, overflow1=%b, overflow2=%b",one,y,f,overflow,overflow1,overflow2);
 		end
-	*/
+	
 endmodule
-
 
 /* ========================================================= */
 /*              UNCHANGED DEPENDENCY MODULES                 */
@@ -121,3 +134,5 @@ module fulladder(a, b, c, s, cout);
 	or #1
 		g6(cout, w2, w3, w4);
 endmodule
+
+
