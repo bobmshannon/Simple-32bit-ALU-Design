@@ -25,22 +25,19 @@ module testALU(x, y, opcode, f, overflow, cout, zero);
 	reg [31:0] x,y;
 	reg [2:0] opcode;
 	assign overflow = 0;
- 
+	
+	always @(f) begin  
+		$display($time);
+	end
+	
 	initial
 		begin
-		$display("====================================================================================");
-		$display("                   32 bit ALU Functional Simulation (zero delay)                       ");
-		$display("                            Author: Robert Shannon			            ");
-		$display("                          Email: rshannon@buffalo.edu		            ");
-		$display("====================================================================================");
-		
-		// ADD
-		$display("----------------------------------------------------------");
-		$display("                 ADDITION FUNCTIONALITY TEST              ");
-		$display("----------------------------------------------------------");
-		x=1024; y=128; opcode=3;
-		$monitor ($time,,"1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
-
+			if ($value$plusargs("x=%b", x) && $value$plusargs("y=%b", y) && $value$plusargs("opcode=%b", opcode)) begin
+				//$display("x=%b, y=%b, opcode=%d",x,y,opcode);
+				assign x = x; 
+				assign y = y; 
+				assign opcode = opcode;
+			end 
 		end
 endmodule
 

@@ -99,13 +99,13 @@ module testALU(x, y, opcode, f, overflow, cout, zero);
 		$display("          SET LESS THAN (SLT) FUNCTIONALITY TEST          ");
 		$display("----------------------------------------------------------");
 		#20 x=24; y=65; opcode=4; #20
-		$display("1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		$display("1. x=%d, y=%d, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		#20 x=71; y=57; opcode=4; #20
-		$display("2. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		$display("2. x=%d, y=%d, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		#20 x=14507; y=97400; opcode=4; #20
-		$display("3. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		$display("3. x=%d, y=%d, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		#20 x=971015; y=167060; opcode=4; #20
-		$display("4. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		$display("4. x=%d, y=%d, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		#20 x=4026855; y=1301126; opcode=4;	#20
 		$display("5. x=%d, y=%d, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		

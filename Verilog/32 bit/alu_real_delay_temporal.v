@@ -28,6 +28,10 @@ module testALU(x, y, opcode, f, overflow, cout, zero);
  
 	initial
 		begin
+		$value$plusargs("x=%d", x);
+		$display("x=%d f=%b", x, f);
+
+		/*
 		$display("====================================================================================");
 		$display("                   32 bit ALU Functional Simulation (zero delay)                       ");
 		$display("                            Author: Robert Shannon			            ");
@@ -40,7 +44,7 @@ module testALU(x, y, opcode, f, overflow, cout, zero);
 		$display("----------------------------------------------------------");
 		x=1024; y=128; opcode=3;
 		$monitor ($time,,"1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
-
+		*/
 		end
 endmodule
 
