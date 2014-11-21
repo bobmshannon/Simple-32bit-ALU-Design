@@ -2,6 +2,9 @@
 	This program is a quick and dirty wrapper for a verilog executable.
 	It provides 5000 random input patterns using boost::random and writes the 
 	output to abort text file so that analysis can be performed later.
+	
+	Robert Shannon
+	rshannon@buffalo.edu
 */
 
 #include <iostream>
@@ -66,7 +69,7 @@ int main() {
 		
 		//cout << x << " " << y << " " << opcode << endl;
 		
-		cmd = "vvp a.out +x=" + x + " +y=" + y + " +opcode=" + opcode;
+		cmd = "vvp a.out +x=" + x + " +y=" + y + " +opcode=" + opcode;	// Program to run or "wrap"
 		string out = exec(cmd);
 		
 		//cout << out;
@@ -89,7 +92,7 @@ int main() {
 	}
 	
 	int j;
-	ofstream f("5krandominputs.txt");
+	ofstream f("5krandominputs.txt");	// Output file
 	for(vector<pair<string,string> >::const_iterator i = db.begin(); i != db.end(); ++i) {
 		string first = (*i).first;
 		string second = (*i).second;

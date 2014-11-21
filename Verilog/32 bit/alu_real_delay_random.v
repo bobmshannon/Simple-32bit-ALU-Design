@@ -1,13 +1,21 @@
 /* **************************************************************** */
-/*             32 bit ALU design with zero delay simulation         */
-/*                        Author: Robert Shannon                    */
-/*                       E-mail: rshannon@buffalo.edu               */
+/*   32 bit ALU design with command line arg support & delay        */
+/*																	*/
+/*			NOTE: This program is designed to be run by				*/
+/*			a wrapper program which generates random input			*/
+/*			patterns and passes them in as command line				*/
+/*			arguments. Please refer to random.cpp and				*/
+/*			stats.cpp for more details as to how the 			    */
+/*			wrapper programs work.							    	*/
+/*				                                                    */
+/*              Author: Robert Shannon                              */
+/*              E-mail: rshannon@buffalo.edu                        */
 /* **************************************************************** */
 `timescale 1ns/1ns
 
 /*
 /* ========================================================= */
-/*                   ZERO DELAY SIMULATION                   */
+/*                   UNIT DELAY SIMULATION                   */
 /* ========================================================= */
 module testbench();
 	wire [31:0] x,y,f;

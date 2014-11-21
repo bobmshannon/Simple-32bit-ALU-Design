@@ -1,5 +1,5 @@
 /* **************************************************************** */
-/*             32 bit ALU design with zero delay simulation         */
+/*             32 bit ALU design with delay simulation              */
 /*                        Author: Robert Shannon                    */
 /*                       E-mail: rshannon@buffalo.edu               */
 /* **************************************************************** */
@@ -7,7 +7,7 @@
 
 /*
 /* ========================================================= */
-/*                   ZERO DELAY SIMULATION                   */
+/*                   UNIT DELAY SIMULATION                   */
 /* ========================================================= */
 module testbench();
 	wire [31:0] x,y,f;
@@ -28,24 +28,36 @@ module testALU(x, y, opcode, f, overflow, cout, zero);
  
 	initial
 		begin
-		$value$plusargs("x=%d", x);
-		$display("x=%d f=%b", x, f);
-
 		/*
 		$display("====================================================================================");
-		$display("                   32 bit ALU Functional Simulation (zero delay)                       ");
-		$display("                            Author: Robert Shannon			            ");
-		$display("                          Email: rshannon@buffalo.edu		            ");
+		$display("                   32 bit ALU Functional Simulation (unit delay)                    ");
+		$display("                            Author: Robert Shannon			                      ");
+		$display("                          Email: rshannon@buffalo.edu		                          ");
 		$display("====================================================================================");
-		
-		// ADD
-		$display("----------------------------------------------------------");
-		$display("                 ADDITION FUNCTIONALITY TEST              ");
-		$display("----------------------------------------------------------");
-		x=1024; y=128; opcode=3;
-		$monitor ($time,,"1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		*/
+		
+		// Example #1 - ADD
+		//x=1024; y=128; opcode=0;
+		//$monitor ($time,,"1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		
+		// Example #2 - SUB
+		//x=8108; y=9375; opcode=3;
+		//$monitor ($time,,"1. x=%d, y=%d, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+
+		// Example #3 - AND
+		//x=32'b00100011100011101000111010110101; y=32'b10111101011001001101011111110110; opcode=2;
+		//$monitor ($time,,"1. x=%b, y=%b, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+
+		// Example #4 - OR
+		//x=32'b10111101111011000011100011101110; y=32'b11101011110011110011111101010100; opcode=1;
+		//$monitor ($time,,"1. x=%b, y=%b, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+
+		// Example #5 - SLT
+		x=14507; y=97400; opcode=4;
+		$monitor ($time,,"1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+
 		end
+
 endmodule
 
 /*

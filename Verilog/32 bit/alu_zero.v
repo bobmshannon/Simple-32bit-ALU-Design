@@ -94,7 +94,7 @@ module testALU(x, y, opcode, f, overflow, cout, zero);
 		#20 x=32'b00111011010100010110110001010000; y=32'b11010101000110011100110110011101; opcode=1; #20
 		$display("5. x=%b, y=%b, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		
-		// BITWISE OR
+		// SLT
 		$display("----------------------------------------------------------");
 		$display("          SET LESS THAN (SLT) FUNCTIONALITY TEST          ");
 		$display("----------------------------------------------------------");
