@@ -37,25 +37,51 @@ module testALU(x, y, opcode, f, overflow, cout, zero);
 		*/
 		
 		// Example #1 - ADD
-		//x=1024; y=128; opcode=0;
-		//$monitor ($time,,"1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		x=1024; y=128; opcode=0;
+		#94 $display ($time,,"1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		x=842; y=986; opcode=0;
+		#113 $display ($time,,"1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		x=1024; y=128; opcode=0;
+		#93 $display ($time,,"1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
 		
 		// Example #2 - SUB
-		//x=8108; y=9375; opcode=3;
-		//$monitor ($time,,"1. x=%d, y=%d, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
-
+		/*
+		x=8108; y=9375; opcode=3;
+		#202 $display ($time,,"1. x=%d, y=%d, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		x=842; y=986; opcode=3;
+		#231 $display ($time,,"1. x=%d, y=%d, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		x=8108; y=9375; opcode=3;
+		#199 $display ($time,,"1. x=%d, y=%d, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		*/
+		
 		// Example #3 - AND
-		//x=32'b00100011100011101000111010110101; y=32'b10111101011001001101011111110110; opcode=2;
-		//$monitor ($time,,"1. x=%b, y=%b, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
-
+		/*
+		x=32'b00100011100011101000111010110101; y=32'b10111101011001001101011111110110; opcode=2;
+		#57 $display ($time,,"1. x=%b, y=%b, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		x=32'b10101011100100001101011000001011; y=32'b00010100011110101110000000010011; opcode=2; 
+		#57 $display ($time,,"1. x=%b, y=%b, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		x=32'b00100011100011101000111010110101; y=32'b10111101011001001101011111110110; opcode=2;
+		#57 $display ($time,,"1. x=%b, y=%b, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		*/
 		// Example #4 - OR
-		//x=32'b10111101111011000011100011101110; y=32'b11101011110011110011111101010100; opcode=1;
-		//$monitor ($time,,"1. x=%b, y=%b, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
-
+		/*
+		x=32'b10111101111011000011100011101110; y=32'b11101011110011110011111101010100; opcode=1;
+		#61 $display ($time,,"1. x=%b, y=%b, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		x=32'b00010110010000100000101010001111; y=32'b11001111111010000100011000111011; opcode=1;
+		#61 $display ($time,,"1. x=%b, y=%b, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		x=32'b10111101111011000011100011101110; y=32'b11101011110011110011111101010100; opcode=1;
+		#61 $display ($time,,"1. x=%b, y=%b, opcode=%b, f=%b, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		*/
+		
 		// Example #5 - SLT
-		x=14507; y=97400; opcode=4;
-		$monitor ($time,,"1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
-
+		/*
+		x=71; y=57; opcode=4;
+		#273 $display ($time,,"1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		x=11; y=57; opcode=4;
+		#278 $display ($time,,"1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		x=71; y=57; opcode=4;
+		#273 $display ($time,,"1. x=%d, y=%d, opcode=%b, f=%d, overflow=%b, zero=%d, cout=%b",x,y,opcode,f,overflow, zero,cout);
+		*/
 		end
 
 endmodule
