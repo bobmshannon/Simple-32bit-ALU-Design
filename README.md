@@ -6,6 +6,7 @@ delay simulations.
 To run:
 
 $ verilog alu_zero.v
+
 $ ./a.out 
 
 
